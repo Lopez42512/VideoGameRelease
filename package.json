@@ -1,0 +1,19 @@
+{
+  "name": "videogamerelease",
+  "version": "1.0.0",
+  "description": "View Upcoming Video Games with their release date and a trailer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lopez42512/VideoGameRelease.git"
+  },
+  "author": "Ismael Lopez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lopez42512/VideoGameRelease/issues"
+  },
+  "homepage": "https://github.com/Lopez42512/VideoGameRelease#readme"
+}
