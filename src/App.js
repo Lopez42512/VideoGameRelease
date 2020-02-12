@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import YouTube from "react-youtube";
 // npm install react-youtube
 
+//ideas for app, add features such as search for games sort by most popular,release date etc... how many games to display at once,what years to sort by  
+
 class App extends Component {
   constructor() {
     super();
@@ -10,7 +12,10 @@ class App extends Component {
       color: "blue",
       result: [],
       videoId: "",
-      click: false
+      click: false,
+      fetchUrl:"",
+      date: "",
+      pagenum: 1
     };
   }
 
@@ -24,30 +29,80 @@ class App extends Component {
   };
 
   componentDidMount() {
+    var dateObj = new Date();
+    var month = dateObj.getUTCMonth() + 1; //months from 1-12
+    var day = dateObj.getUTCDate();
+    var year = dateObj.getUTCFullYear();
+
+    const newdate = year + "-0" + month + "-" + day;
+    const endDate = year+5 + "-0" + month + "-" + day;
+    console.log(newdate)
     fetch(
-      "https://api.rawg.io/api/games?dates=2019-10-10,2020-10-10&ordering=-added"
+      // `https://api.rawg.io/api/games?dates=${newdate},${endDate}&ordering=released&page=1&page_size=40&platforms=7,18,1`
+      `https://api.rawg.io/api/games?dates=2012-01-01,${newdate}&ordering=-rating&page=${this.state.pagenum}&page_size=40&platforms=7,18,1`
+      //Code below is starting point for searching for games 
+      // "https://api.rawg.io/api/games?search=witcher"
     )
       .then(res => res.json())
       .then(results => {
-        this.setState({ result: results.results });
+        console.log(results);
+        this.setState({ result: results.results, fetchUrl: results.next});
       });
   }
+  nextPage = () => {
+    console.log("hello");
+    this.setState({pagenum: this.state.pagenum = this.state.pagenum + 1})
+    //for next page to work I'm thinking about sending the fetch url into state and than ill call it and add the next page number
+    fetch(
+      this.state.fetchUrl
+      // "https://api.rawg.io/api/games?dates=2020-02-12,2020-10-10&ordering=released&page=2&page_size=40&platforms=7,18,1"
+      // "https://api.rawg.io/api/games"
+    )
+      .then(res => res.json())
+      .then(results => {
+        console.log(results);
+        this.setState({ result: results.results, fetchUrl: results.next });
+      });
+  };
 
   render() {
-    console.log(this.state.result);
-    console.log(this.state.click);
+    // console.log(this.state.result);
+    console.log(this.state.pagenum);
+    console.log(this.state.fetchUrl)
     const gameImg = this.state.result.map(img => (
-      <div style={{ position: "relative", textAlign: "center", margin: "auto", padding: 2 }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          margin: "auto",
+          padding: 2,
+          height: "400px"
+        }}
+      >
         <img
           onClick={this.handlesubmit}
-          value={img.clip.video}
-          name={img.clip.video}
-          style={{ width: "75%"}}
+          // value={img.clip.video}
+          // name={img.clip.video}
+          style={{ width: 600, height: "50%", position: "absolute" }}
           key={img.id}
           src={img.background_image}
           alt="img not avalable"
         />
-        <div style={{position: "absolute" , fontSize: 50 , opacity: .7 ,width: "75%" , height: "10%" ,top: "80%", left: "12.5%" ,color:"white", backgroundColor: "black"}}>{img.name}</div>
+        <div
+          style={{
+            position: "relative",
+            fontSize: 50,
+            textAlign: "center",
+            opacity: 0.7,
+            width: 600,
+            height: "20%",
+            top: "80%",
+            color: "white",
+            backgroundColor: "black"
+          }}
+        >
+          {img.name}
+        </div>
       </div>
     ));
 
@@ -68,6 +123,7 @@ class App extends Component {
 
     return (
       <div>
+        <button onClick={this.nextPage}>next Page</button>
         {this.state.click === false ? (
           <div>{gameImg}</div>
         ) : (
