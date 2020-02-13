@@ -1,0 +1,36 @@
+body {
+    margin: auto;
+    background-image: url(./controller.png);
+}
+
+.header {
+    position: relative;
+    /* color: white; */
+    width: 100%;
+    height: 100px;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 1000px;
+}
+
+.overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgb(61, 75, 80);
+    overflow: hidden;
+    z-index: 1;
+    height: 100%;
+    transition: .5s ease;
+  }
+.gameContainer {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    background-color: coral;
+
+}

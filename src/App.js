@@ -1,32 +1,15 @@
 import React, { Component } from "react";
-import YouTube from "react-youtube";
-// npm install react-youtube
-
-//ideas for app, add features such as search for games sort by most popular,release date etc... how many games to display at once,what years to sort by  
+// import YouTube from "react-youtube";
+import Header from "./Header";
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      number: 1,
-      color: "blue",
-      result: [],
-      videoId: "",
-      click: false,
-      fetchUrl:"",
-      date: "",
-      pagenum: 1
+      results: [],
+      overlay: true
     };
   }
-
-  handlesubmit = event => {
-    event.preventDefault();
-    const { name, value } = event.target;
-    console.log(value);
-    // name === "hello" ? this.setState({ number: 0 }) : this.setState({ number: 1, color: "green" })
-    console.log(name);
-    this.setState({ videoId: name, click: !this.state.click });
-  };
 
   componentDidMount() {
     var dateObj = new Date();
@@ -35,55 +18,38 @@ class App extends Component {
     var year = dateObj.getUTCFullYear();
 
     const newdate = year + "-0" + month + "-" + day;
-    const endDate = year+5 + "-0" + month + "-" + day;
-    console.log(newdate)
+    const endDate = year + 5 + "-0" + month + "-" + day;
     fetch(
-      // `https://api.rawg.io/api/games?dates=${newdate},${endDate}&ordering=released&page=1&page_size=40&platforms=7,18,1`
-      `https://api.rawg.io/api/games?dates=2012-01-01,${newdate}&ordering=-rating&page=${this.state.pagenum}&page_size=40&platforms=7,18,1`
-      //Code below is starting point for searching for games 
-      // "https://api.rawg.io/api/games?search=witcher"
+      `https://api.rawg.io/api/games?dates=${newdate},${endDate}&ordering=released&page=1&page_size=40&platforms=7,18,1`
     )
-      .then(res => res.json())
+      .then(response => response.json())
       .then(results => {
-        console.log(results);
-        this.setState({ result: results.results, fetchUrl: results.next});
+        this.setState({ results: results.results });
       });
   }
-  nextPage = () => {
-    console.log("hello");
-    this.setState({pagenum: this.state.pagenum = this.state.pagenum + 1})
-    //for next page to work I'm thinking about sending the fetch url into state and than ill call it and add the next page number
-    fetch(
-      this.state.fetchUrl
-      // "https://api.rawg.io/api/games?dates=2020-02-12,2020-10-10&ordering=released&page=2&page_size=40&platforms=7,18,1"
-      // "https://api.rawg.io/api/games"
-    )
-      .then(res => res.json())
-      .then(results => {
-        console.log(results);
-        this.setState({ result: results.results, fetchUrl: results.next });
-      });
+
+  handleClick = () => {
+    this.setState({ overlay: !this.state.overlay });
   };
 
   render() {
-    // console.log(this.state.result);
-    console.log(this.state.pagenum);
-    console.log(this.state.fetchUrl)
-    const gameImg = this.state.result.map(img => (
+    let overlayStyle;
+    this.state.overlay ? (overlayStyle = "0%") : (overlayStyle = "30%");
+    const games = this.state.results.map(img => (
       <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          margin: "auto",
-          padding: 2,
-          height: "400px"
-        }}
+        // style={{
+        //   display: "flex",
+        //   justifyContent: "center",
+        //   margin: "auto",
+        //   padding: 2,
+        //   height: "400px"
+        // }}
       >
         <img
           onClick={this.handlesubmit}
           // value={img.clip.video}
-          // name={img.clip.video}
-          style={{ width: 600, height: "50%", position: "absolute" }}
+          name={img.id}
+          style={{ width: "40%", height: 300, position: "relative"}}
           key={img.id}
           src={img.background_image}
           alt="img not avalable"
@@ -96,7 +62,7 @@ class App extends Component {
             opacity: 0.7,
             width: 600,
             height: "20%",
-            top: "80%",
+            top: "0%",
             color: "white",
             backgroundColor: "black"
           }}
@@ -105,45 +71,24 @@ class App extends Component {
         </div>
       </div>
     ));
-
-    const opts = {
-      height: "390",
-      width: "50%",
-      playerVars: {
-        // https://developers.google.com/youtube/player_parameters
-        autoplay: 0
-      }
-    };
-    // const display =
-    //     this.state.click === false ? <div>{gameImg}</div>   : <YouTube
-    //         videoId={this.state.videoId}
-    //         opts={opts}
-    //         onReady={this._onReady}
-    //     />
-
+    console.log(this.state.results);
     return (
       <div>
-        <button onClick={this.nextPage}>next Page</button>
-        {this.state.click === false ? (
-          <div>{gameImg}</div>
-        ) : (
-          <div>
-            <button style={{ fontSize: 40 }} onClick={this.handlesubmit}>
-              x
-            </button>
-            <YouTube
-              videoId={this.state.videoId}
-              opts={opts}
-              onReady={this._onReady}
-            />
+        <Header></Header>
+        <div className="container">
+          <button onClick={this.handleClick}>press me</button>
+          <div className="overlay" style={{ width: overlayStyle }}>
+            <button onClick={this.handleClick}>press me</button>
+            <form>
+              <input></input>
+              <input></input>
+              <input></input>
+            </form>
           </div>
-        )}
+          {games}
+        </div>
       </div>
     );
-  }
-  _onReady(event) {
-    // access to player in all event handlers via event.target
-    event.target.pauseVideo();
   }
 }
 
