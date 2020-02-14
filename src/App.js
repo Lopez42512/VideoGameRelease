@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-// import YouTube from "react-youtube";
+import YouTube from "react-youtube";
 import Header from "./Header";
 
 class App extends Component {
@@ -7,6 +7,8 @@ class App extends Component {
     super();
     this.state = {
       results: [],
+      targetGame: [],
+      youtubePage: true,
       overlay: true
     };
   }
@@ -32,6 +34,16 @@ class App extends Component {
     this.setState({ overlay: !this.state.overlay });
   };
 
+  handlesubmit = event => {
+    const { name } = event.target;
+    const grabGame = this.state.results.find(id => id.id === parseInt(name));
+    console.log(grabGame);
+    this.setState({
+      targetGame: grabGame,
+      youtubePage: !this.state.youtubePage
+    });
+  };
+
   render() {
     let overlayStyle;
     this.state.overlay ? (overlayStyle = "0%") : (overlayStyle = "50%");
@@ -48,24 +60,45 @@ class App extends Component {
         />
         <div className="picText">{img.name}</div>
       </div>
-      
     ));
+    const opts = {
+      height: "500px",
+      width: "800px",
+      playerVars: {
+        // https://developers.google.com/youtube/player_parameters
+        autoplay: 0
+      }
+    };
 
-    console.log(this.state.results);
     return (
       <div>
         <Header handleClick={this.handleClick}></Header>
-
-        <div className="container">
-          <div className="overlay" style={{ width: overlayStyle }}>
-            <form>
-              <input></input>
-              <input></input>
-              <input></input>
-            </form>
+        {this.state.youtubePage ? (
+          <div className="container">
+            <div className="overlay" style={{ width: overlayStyle }}>
+              <form>
+                <input></input>
+                <input></input>
+                <input></input>
+              </form>
+            </div>
+            {games}
           </div>
-          {games}
-        </div>
+        ) : (
+          <div className="youtubeContainer">
+            {/* <button style={{position:"absolute", fontSize: 40 }} onClick={this.handlesubmit}>
+              x
+            </button> */}
+            <h2 className="gameTitle">{this.state.targetGame.name}</h2>
+            <div className="game">
+              <YouTube
+                videoId={this.state.targetGame.clip.video}
+                opts={opts}
+                onReady={this._onReady}
+              />
+            </div>
+          </div>
+        )}
       </div>
     );
   }
