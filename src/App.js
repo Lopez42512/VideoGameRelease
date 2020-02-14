@@ -20,7 +20,7 @@ class App extends Component {
     const newdate = year + "-0" + month + "-" + day;
     const endDate = year + 5 + "-0" + month + "-" + day;
     fetch(
-      `https://api.rawg.io/api/games?dates=${newdate},${endDate}&ordering=released&page=1&page_size=40&platforms=7,18,1`
+      `https://api.rawg.io/api/games?dates=${newdate},${endDate}&ordering=-rating&page=1&page_size=26&platforms=7,18,1`
     )
       .then(response => response.json())
       .then(results => {
@@ -34,51 +34,30 @@ class App extends Component {
 
   render() {
     let overlayStyle;
-    this.state.overlay ? (overlayStyle = "0%") : (overlayStyle = "30%");
+    this.state.overlay ? (overlayStyle = "0%") : (overlayStyle = "50%");
     const games = this.state.results.map(img => (
-      <div
-        // style={{
-        //   display: "flex",
-        //   justifyContent: "center",
-        //   margin: "auto",
-        //   padding: 2,
-        //   height: "400px"
-        // }}
-      >
+      <div className="gameContainer">
         <img
           onClick={this.handlesubmit}
           // value={img.clip.video}
           name={img.id}
-          style={{ width: "40%", height: 300, position: "relative"}}
+          className="gamePic"
           key={img.id}
           src={img.background_image}
           alt="img not avalable"
         />
-        <div
-          style={{
-            position: "relative",
-            fontSize: 50,
-            textAlign: "center",
-            opacity: 0.7,
-            width: 600,
-            height: "20%",
-            top: "0%",
-            color: "white",
-            backgroundColor: "black"
-          }}
-        >
-          {img.name}
-        </div>
+        <div className="picText">{img.name}</div>
       </div>
+      
     ));
+
     console.log(this.state.results);
     return (
       <div>
-        <Header></Header>
+        <Header handleClick={this.handleClick}></Header>
+
         <div className="container">
-          <button onClick={this.handleClick}>press me</button>
           <div className="overlay" style={{ width: overlayStyle }}>
-            <button onClick={this.handleClick}>press me</button>
             <form>
               <input></input>
               <input></input>
