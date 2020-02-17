@@ -182,7 +182,7 @@ class App extends Component {
                 <Interweave content={this.state.gameDesc} />
               </div>
             </div>
-            
+            <div className="blankContainer" />
           </div>
         )}
       </div>
