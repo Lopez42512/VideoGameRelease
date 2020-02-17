@@ -11,10 +11,12 @@ class App extends Component {
       youtubePage: true,
       overlay: true,
       imageOrVid: true,
+      gameClip: "",
       bigImg: "",
       gameImg: [
         "https://media.rawg.io/media/games/fb5/fb5e0fdb1f6bb0e8b5da5d08bb83a5fc.jpg"
-      ]
+      ],
+      gameVid: []
     };
   }
 
@@ -43,16 +45,24 @@ class App extends Component {
   };
 
   unClick = () => {
-    this.setState({ youtubePage: !this.state.youtubePage, imageOrVid: true });
+    this.setState({ youtubePage: !this.state.youtubePage, imageOrVid: true, gameVid: [] });
   };
 
   handlesubmit = event => {
     const { name } = event.target;
     const grabGame = this.state.results.find(id => id.id === parseInt(name));
-    console.log(grabGame);
+    console.log(grabGame.id);
+    fetch(`https://api.rawg.io/api/games/${grabGame.id}/youtube`)
+      .then(response => response.json())
+      .then(results => {
+        const gamevid = results.results.map(vid => vid.external_id);
+        const sliceVid = gamevid.slice(0,7)
+        this.setState({ gameVid: sliceVid });
+      });
     const grabImg = grabGame.short_screenshots;
 
     this.setState({
+      gameClip: grabGame.clip.video,
       targetGame: grabGame,
       youtubePage: !this.state.youtubePage,
       gameImg: grabImg
@@ -60,12 +70,18 @@ class App extends Component {
   };
 
   chooseImg = event => {
-    console.log(event)
     const img = event.target.src;
     this.setState({ bigImg: img, imageOrVid: false });
   };
+  chooseVid = event => {
+    event.target.stopVideo()
+    console.log(event.target.b.b.videoId)
+    console.log(this.state.targetGame.clip.video)
+    this.setState({gameClip: event.target.b.b.videoId })
+  }
 
   render() {
+    console.log(this.state.gameVid);
     let overlayStyle;
     this.state.overlay ? (overlayStyle = "0%") : (overlayStyle = "50%");
     const games = this.state.results.map(img => (
@@ -98,7 +114,15 @@ class App extends Component {
         alt="not found"
       />
     ));
-    
+      const gameVids = this.state.gameVid.map(vid => (
+      <YouTube
+        className="scrollVid"
+        onPlay={this.chooseVid}
+        videoId={vid}
+        opts={{ width: 200, height: 100 }}
+        onReady={this._onReady}
+      />
+    ));
     return (
       <div>
         <Header handleClick={this.handleClick}></Header>
@@ -127,21 +151,21 @@ class App extends Component {
                 {this.state.imageOrVid ? (
                   <YouTube
                     className="gameVid"
-                    videoId={this.state.targetGame.clip.video}
+                    videoId={this.state.gameClip}
                     opts={opts}
                     onReady={this._onReady}
                   />
                 ) : (
-                  <img className="gameVid" src={this.state.bigImg} alt="not found" />
+                  <img
+                    className="gameVid"
+                    src={this.state.bigImg}
+                    alt="not found"
+                  />
                 )}
               </div>
               <div className="scrollmenu">
-                <YouTube
-                  videoId={this.state.targetGame.clip.video}
-                  opts={{ width: 200, height: 100 }}
-                  onReady={this._onReady}
-                />
-                {gameImg}
+                <div className="vidContainer">{gameVids}</div>
+                <div className="imgContainer">{gameImg}</div>
               </div>
             </div>
           </div>

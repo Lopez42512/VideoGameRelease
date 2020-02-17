@@ -104,6 +104,23 @@ body {
 .scrollImg:hover {
   background-color: #777;
 }
+.scrollVid {
+  text-align: center;
+}
+.imgContainer {
+  position: absolute;
+  width: 100%;
+  height: 100px;
+  top: 50%;
+}
+.vidContainer {
+  display: flex;
+  z-index: 1;
+  width: 100%;
+  height: 100px;
+  /* top: 50%; */
+}
+
 
 @media only screen and (max-width: 999px) {
     .gameContainer {
