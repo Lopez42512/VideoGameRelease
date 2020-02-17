@@ -148,12 +148,12 @@ class App extends Component {
           </div>
         ) : (
           <div>
-            <button
+            {/* <button
               style={{ position: "relative", fontSize: 40, left: "0%" }}
               onClick={this.unClick}
             >
               x
-            </button>
+            </button> */}
             <div className="youtubeContainer">
               <h2 className="gameTitle">{this.state.targetGame.name}</h2>
               <div className="game">
