@@ -74,9 +74,9 @@ class App extends Component {
     this.setState({ bigImg: img, imageOrVid: false });
   };
   chooseVid = event => {
-    event.target.stopVideo()
-    console.log(event.target.b.b.videoId)
-    console.log(this.state.targetGame.clip.video)
+    if(window.innerWidth > 500){
+      event.target.stopVideo()
+    }
     this.setState({gameClip: event.target.b.b.videoId })
   }
 
