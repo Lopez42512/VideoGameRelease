@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import YouTube from "react-youtube";
 import Header from "./Header";
+import Interweave from "interweave"
+//add a sumary of the game and add a link to where to buy the game
 
 class App extends Component {
   constructor() {
@@ -13,6 +15,8 @@ class App extends Component {
       imageOrVid: true,
       gameClip: "",
       bigImg: "",
+      // gameDesc: "",
+      stores: [],
       gameImg: [
         "https://media.rawg.io/media/games/fb5/fb5e0fdb1f6bb0e8b5da5d08bb83a5fc.jpg"
       ],
@@ -22,7 +26,7 @@ class App extends Component {
 
   componentDidMount() {
     var dateObj = new Date();
-    var month = dateObj.getUTCMonth() + 1; //months from 1-12
+    var month = dateObj.getUTCMonth() + 1; 
     var day = dateObj.getUTCDate();
     var year = dateObj.getUTCFullYear();
 
@@ -51,18 +55,23 @@ class App extends Component {
   handlesubmit = event => {
     const { name } = event.target;
     const grabGame = this.state.results.find(id => id.id === parseInt(name));
-    console.log(grabGame.id);
-    fetch(`https://api.rawg.io/api/games/${grabGame.id}/youtube`)
+    fetch([`https://api.rawg.io/api/games/${grabGame.id}/youtube`])
       .then(response => response.json())
       .then(results => {
         const gamevid = results.results.map(vid => vid.external_id);
         const sliceVid = gamevid.slice(0,7)
         this.setState({ gameVid: sliceVid });
       });
+      fetch(`https://api.rawg.io/api/games/${grabGame.id}`)
+      .then(response => response.json())
+      .then(results => {
+        console.log(results)
+        this.setState({gameDesc: results.description})
+      });
     const grabImg = grabGame.short_screenshots;
-
+    const ifVidorNot = grabGame.clip === null ? "aDm5WZ3QiIE" : grabGame.clip.video
     this.setState({
-      gameClip: grabGame.clip.video,
+      gameClip: ifVidorNot,
       targetGame: grabGame,
       youtubePage: !this.state.youtubePage,
       gameImg: grabImg
@@ -77,11 +86,10 @@ class App extends Component {
     if(window.innerWidth > 500){
       event.target.stopVideo()
     }
-    this.setState({gameClip: event.target.b.b.videoId })
+    this.setState({gameClip: event.target.b.b.videoId, imageOrVid: true})
   }
 
   render() {
-    console.log(this.state.gameVid);
     let overlayStyle;
     this.state.overlay ? (overlayStyle = "0%") : (overlayStyle = "50%");
     const games = this.state.results.map(img => (
@@ -123,9 +131,10 @@ class App extends Component {
         onReady={this._onReady}
       />
     ));
+    // const fixDesc = this.state.gameDesc.replace(/"/g,)
     return (
       <div>
-        <Header handleClick={this.handleClick}></Header>
+        {/* <Header handleClick={this.handleClick}></Header> */}
         {this.state.youtubePage ? (
           <div className="container">
             <div className="overlay" style={{ width: overlayStyle }}>
@@ -168,6 +177,12 @@ class App extends Component {
                 <div className="imgContainer">{gameImg}</div>
               </div>
             </div>
+            <div className="gameDescriptionContainer">
+              <div className="gameDescription">
+                <Interweave content={this.state.gameDesc} />
+              </div>
+            </div>
+            
           </div>
         )}
       </div>
