@@ -70,9 +70,9 @@ body {
   position: absolute;
   width: 100%;
   height: 110px;
-  font-size: 330%;
+  font-size: 230%;
   font-family: 'Abril Fatface', cursive;
-  margin-top: 0px;
+  /* margin-top: 0px; */
   color: black;
   /* background-color: yellow; */
   text-align: center;
@@ -131,7 +131,7 @@ body {
 }
 .gameDescription {
   width: 75%;
-  font-size: 200%;
+  font-size: 150%;
   height: 200px;
   /* background-color: white; */
   /* overflow: scroll; */
@@ -183,7 +183,7 @@ body {
       margin-top: -140px;
     }
     .gameDescription {
-      font-size: 200%;
+      font-size: 130%;
       height: 400px;
       /* padding: 0px 25px 0px 25px; */
       /* text-align: center; */
@@ -206,7 +206,7 @@ body {
       height: 200px;
     }
     .gameTitle{
-      font-size: 200%;
+      font-size: 175%;
     }
     .scrollmenu {
       top: 43.5%;
@@ -215,7 +215,7 @@ body {
       margin-top: -255px;
     }
     .gameDescription {
-      font-size: 200%;
+      font-size: 100%;
       height: 400px;
       /* padding: 0px 25px 0px 25px; */
       /* text-align: center; */
