@@ -50,7 +50,6 @@ class App extends Component {
   }
 
   handleClick = () => {
-    console.log(window.innerWidth);
     this.setState({ overlay: !this.state.overlay });
   };
 
@@ -121,6 +120,7 @@ class App extends Component {
       .then(results => {
         console.log(results);
         this.setState({
+          overlay: !this.state.overlay,
           results: results.results,
           targetGame: results.results,
           fetchUrl: results.next
