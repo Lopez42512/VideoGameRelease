@@ -1,6 +1,6 @@
 body {
   margin: auto;
-  /* background-color: blanchedalmond; */
+  background-color: #f6f6f6;
   /* background-image: url(./controller.png); */
 }
 
@@ -105,9 +105,7 @@ body {
   height: 100px;
   margin: 1px 1px 0px 0px;
 }
-.scrollImg:hover {
-  background-color: #777;
-}
+
 .scrollVid {
   text-align: center;
   margin-right: 1px;
@@ -135,7 +133,7 @@ body {
   width: 75%;
   font-size: 200%;
   height: 200px;
-  background-color: white;
+  /* background-color: white; */
   /* overflow: scroll; */
   border: 1px;
   /* border-style: solid;
