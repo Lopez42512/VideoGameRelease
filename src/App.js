@@ -12,8 +12,10 @@ class App extends Component {
       targetGame: [],
       youtubePage: true,
       overlay: true,
+      pageNum: 1,
       overlayStyle: "315px",
       imageOrVid: true,
+      fetchUrl: "",
       gameClip: "",
       bigImg: "",
       // gameDesc: "",
@@ -34,14 +36,15 @@ class App extends Component {
     const newdate = year + "-0" + month + "-" + day;
     const endDate = year + 5 + "-0" + month + "-" + day;
     fetch(
-      `https://api.rawg.io/api/games?dates=${newdate},${endDate}&ordering=-rating&page=1&page_size=26&platforms=7,18,1`
+      `https://api.rawg.io/api/games?dates=${newdate},${endDate}&ordering=-rating&page=${this.state.pageNum}&page_size=26&platforms=7,18,1`
     )
       .then(response => response.json())
       .then(results => {
         console.log(results);
         this.setState({
           results: results.results,
-          targetGame: results.results
+          targetGame: results.results,
+          fetchUrl: results.next
         });
       });
   }
@@ -96,6 +99,33 @@ class App extends Component {
       event.target.stopVideo();
     }
     this.setState({ gameClip: event.target.b.b.videoId, imageOrVid: true });
+  };
+  newPage = event => {
+    const { name } = event.target;
+    name === "next"
+      ? this.setState({ pageNum: (this.state.pageNum += 1) })
+      : this.state.pageNum === 1
+      ? this.setState({ pageNum: 1 })
+      : this.setState({ pageNum: (this.state.pageNum -= 1) });
+    var dateObj = new Date();
+    var month = dateObj.getUTCMonth() + 1;
+    var day = dateObj.getUTCDate();
+    var year = dateObj.getUTCFullYear();
+
+    const newdate = year + "-0" + month + "-" + day;
+    const endDate = year + 5 + "-0" + month + "-" + day;
+    fetch(
+      `https://api.rawg.io/api/games?dates=${newdate},${endDate}&ordering=-rating&page=${this.state.pageNum}&page_size=26&platforms=7,18,1`
+    )
+      .then(response => response.json())
+      .then(results => {
+        console.log(results);
+        this.setState({
+          results: results.results,
+          targetGame: results.results,
+          fetchUrl: results.next
+        });
+      });
   };
 
   render() {
@@ -152,8 +182,19 @@ class App extends Component {
               <div className="overlayBackgroundColor" />
               <div className="overlayEverything">
                 <form>
-                  <input placeholder="&#x1F50D;" style={{width: 250,height:25 ,marginTop:20}}></input>
+                  <input
+                    placeholder="&#x1F50D;"
+                    style={{ width: 250, height: 25, marginTop: 20 }}
+                  ></input>
                 </form>
+                <div className="pageButtons">
+                  <button onClick={this.newPage} name="prev">
+                    Previous Page
+                  </button>
+                  <button onClick={this.newPage} name="next">
+                    Next Page
+                  </button>
+                </div>
               </div>
             </div>
             {games}
