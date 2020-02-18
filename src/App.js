@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import YouTube from "react-youtube";
 import Header from "./Header";
-import Interweave from "interweave"
+import Interweave from "interweave";
 //add a sumary of the game and add a link to where to buy the game
 
 class App extends Component {
@@ -12,6 +12,7 @@ class App extends Component {
       targetGame: [],
       youtubePage: true,
       overlay: true,
+      overlayStyle: "315px",
       imageOrVid: true,
       gameClip: "",
       bigImg: "",
@@ -26,7 +27,7 @@ class App extends Component {
 
   componentDidMount() {
     var dateObj = new Date();
-    var month = dateObj.getUTCMonth() + 1; 
+    var month = dateObj.getUTCMonth() + 1;
     var day = dateObj.getUTCDate();
     var year = dateObj.getUTCFullYear();
 
@@ -37,6 +38,7 @@ class App extends Component {
     )
       .then(response => response.json())
       .then(results => {
+        console.log(results);
         this.setState({
           results: results.results,
           targetGame: results.results
@@ -45,31 +47,38 @@ class App extends Component {
   }
 
   handleClick = () => {
+    console.log(window.innerWidth);
     this.setState({ overlay: !this.state.overlay });
   };
 
   unClick = () => {
-    this.setState({ youtubePage: !this.state.youtubePage, imageOrVid: true, gameVid: [] });
+    this.setState({
+      youtubePage: !this.state.youtubePage,
+      imageOrVid: true,
+      gameVid: []
+    });
   };
 
   handlesubmit = event => {
+    window.scrollTo(0, 0);
     const { name } = event.target;
     const grabGame = this.state.results.find(id => id.id === parseInt(name));
     fetch([`https://api.rawg.io/api/games/${grabGame.id}/youtube`])
       .then(response => response.json())
       .then(results => {
         const gamevid = results.results.map(vid => vid.external_id);
-        const sliceVid = gamevid.slice(0,7)
+        const sliceVid = gamevid.slice(0, 7);
         this.setState({ gameVid: sliceVid });
       });
-      fetch(`https://api.rawg.io/api/games/${grabGame.id}`)
+    fetch(`https://api.rawg.io/api/games/${grabGame.id}`)
       .then(response => response.json())
       .then(results => {
-        console.log(results)
-        this.setState({gameDesc: results.description})
+        console.log(results);
+        this.setState({ gameDesc: results.description });
       });
     const grabImg = grabGame.short_screenshots;
-    const ifVidorNot = grabGame.clip === null ? "aDm5WZ3QiIE" : grabGame.clip.video
+    const ifVidorNot =
+      grabGame.clip === null ? "aDm5WZ3QiIE" : grabGame.clip.video;
     this.setState({
       gameClip: ifVidorNot,
       targetGame: grabGame,
@@ -83,15 +92,17 @@ class App extends Component {
     this.setState({ bigImg: img, imageOrVid: false });
   };
   chooseVid = event => {
-    if(window.innerWidth > 500){
-      event.target.stopVideo()
+    if (window.innerWidth > 500) {
+      event.target.stopVideo();
     }
-    this.setState({gameClip: event.target.b.b.videoId, imageOrVid: true})
-  }
+    this.setState({ gameClip: event.target.b.b.videoId, imageOrVid: true });
+  };
 
   render() {
     let overlayStyle;
-    this.state.overlay ? (overlayStyle = "0%") : (overlayStyle = "50%");
+    this.state.overlay
+      ? (overlayStyle = "0%")
+      : (overlayStyle = this.state.overlayStyle);
     const games = this.state.results.map(img => (
       <div className="gameContainer">
         <img
@@ -122,7 +133,7 @@ class App extends Component {
         alt="not found"
       />
     ));
-      const gameVids = this.state.gameVid.map(vid => (
+    const gameVids = this.state.gameVid.map(vid => (
       <YouTube
         className="scrollVid"
         onPlay={this.chooseVid}
@@ -134,15 +145,16 @@ class App extends Component {
     // const fixDesc = this.state.gameDesc.replace(/"/g,)
     return (
       <div>
-        {/* <Header handleClick={this.handleClick}></Header> */}
+        <Header handleClick={this.handleClick}></Header>
         {this.state.youtubePage ? (
           <div className="container">
             <div className="overlay" style={{ width: overlayStyle }}>
-              <form>
-                <input></input>
-                <input></input>
-                <input></input>
-              </form>
+              <div className="overlayBackgroundColor" />
+              <div className="overlayEverything">
+                <form>
+                  <input placeholder="&#x1F50D;" style={{width: 250,height:25 ,marginTop:20}}></input>
+                </form>
+              </div>
             </div>
             {games}
           </div>
