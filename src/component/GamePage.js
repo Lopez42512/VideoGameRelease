@@ -9,6 +9,9 @@ function GamePage() {
   const [gameDesc, setGameDesc] = useState([]);
   const [gameImages, setGameImages] = useState([]);
   const [imageOrVid, setimageOrVid] = useState(true);
+  const [bigImg, setbigImg] = useState("");
+  const [bigVid, setbigVid] = useState("");
+  const [playVid, setplayVid] = useState(true);
 
   //setting up the function the onMount will call to set the result into their respected places
 
@@ -16,6 +19,8 @@ function GamePage() {
     setGameDesc(x);
     setGameVideo(y);
     setGameImages(z);
+    setbigVid(y.results[0].external_id);
+    setbigImg(z.results[0].image);
   }
 
   //onmount to get the games information and place the information into the proper state to be called later
@@ -38,7 +43,7 @@ function GamePage() {
     gameImages.results !== undefined
       ? gameImages.results.map(img => (
           <img
-            // onClick={this.chooseImg}
+            onClick={chooseImg}
             key={img.id}
             className="scrollImg"
             src={img.image}
@@ -47,12 +52,13 @@ function GamePage() {
         ))
       : console.log("no images");
 
-  // checking to see if the api has loaded to display the main video on the page so the page won't crash
+  // the onclick for the images on the scrollbar this display the image that is clicked onto the big screen
 
-  const youtubeId =
-    gameVideo.results !== undefined
-      ? gameVideo.results[0].external_id
-      : "undefined";
+  function chooseImg(event) {
+    const { src } = event.target;
+    setbigImg(src);
+    setimageOrVid(false);
+  }
 
   // mapping through the videos to display all of them for the selected game on the scrollbar
 
@@ -60,6 +66,7 @@ function GamePage() {
     gameVideo.results !== undefined
       ? gameVideo.results.map(vid => (
           <YouTube
+            onPlay={chooseVid}
             key={vid.id}
             className="scrollVid"
             videoId={vid.external_id}
@@ -68,8 +75,22 @@ function GamePage() {
           />
         ))
       : console.log("no videos");
-  const videosOnScrollBarSliced = videosOnScrollBar !== undefined ? videosOnScrollBar.slice(0,6) : console.log("no videos")
 
+  // the onclick for the Videos on the scrollbar this display the video that is clicked onto the big screen
+  function chooseVid(event) {
+    if (window.innerWidth > 500) {
+      event.target.stopVideo();
+    }
+    console.log(event.target);
+    // this.setState({ gameClip: event.target.b.b.videoId, imageOrVid: true });
+    setbigVid(event.target.b.b.videoId);
+    setimageOrVid(true);
+  }
+  const videosOnScrollBarSliced =
+    videosOnScrollBar !== undefined
+      ? videosOnScrollBar.slice(0, 6)
+      : console.log("no videos");
+  
   return (
     <div className="youtubeContainer">
       <h2 className="gameTitle">{gameDesc.name}</h2>
@@ -77,12 +98,12 @@ function GamePage() {
         {imageOrVid ? (
           <YouTube
             className="gameVid"
-            videoId={youtubeId}
+            videoId={bigVid}
             // opts={opts}
-            // onReady={this._onReady}
+            onReady={_onReady}
           />
         ) : (
-          <img className="gameVid" src={this.state.bigImg} alt="not found" />
+          <img className="gameVid" src={bigImg} alt="not found" />
         )}
       </div>
       <div className="scrollmenu">
@@ -97,7 +118,11 @@ function GamePage() {
       <div className="blankContainer" />
     </div>
   );
+  function _onReady(event) {
+    console.log("heloo")
+    // access to player in all event handlers via event.target
+    // event.target.pauseVideo();
+  }
 }
 
 export default GamePage;
-
