@@ -84,9 +84,7 @@ body {
   z-index: 0;
   /* display: none; */
 }
-.gamePic1:hover {
-  display: none;
-}
+
 .picText {
   position: absolute;
   display: inline-block;
