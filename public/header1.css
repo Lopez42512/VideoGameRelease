@@ -1,0 +1,67 @@
+.burgercontainer {
+  position: absolute;
+  /* top: 50%; */
+  width: 100px;
+  /* height: 50px; */
+  font-size: 130%;
+  color: white;
+  text-decoration: none;
+  border: none;
+  background-color: black;
+  left: 3%;
+}
+
+.burgercontainer:hover {
+    cursor: pointer;
+}
+
+.searchBar {
+    position: absolute;
+    background-color: black;
+    text-decoration: none;
+    opacity: .5;
+    width: 50%;
+    height: 30px;
+    padding-left: 20px;
+    border-radius: 20px;
+    left: 25%
+}
+.searchBar:hover{
+    background-color: white;
+    opacity: 1;
+}
+::placeholder {
+    color: white;
+    
+    font-size: small;
+}
+::placeholder:hover{
+    color: black
+}
+.headerContainer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 50px;
+}
+.header {
+  position: relative;
+  background-color: black;
+  width: 80%;
+  height: 80px;
+  padding: 30px 17% 0px 3%;
+  opacity: .9;
+}
+
+@media only screen and (max-width: 805px) {
+    .searchBar{
+        width: 200px;
+        left:40%
+    }
+}
+@media only screen and (max-width: 424px) {
+    .searchBar{
+        width: 100px;
+        left:50%
+    }
+}

@@ -7,7 +7,7 @@ body {
   /* display: flex; */
   /* justify-content: center; */
   text-align: center;
-  background-color: tan;
+  background-color:black;
 }
 .gameTitle {
   font-size: 200%;
@@ -18,6 +18,10 @@ body {
   position: relative;
   width: 80%;
   left: 10%;
+}
+.gameVid {
+  width: 75%;
+  height: 364px;
 }
 .scrollmenu {
   position: relative;

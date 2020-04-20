@@ -54,7 +54,7 @@ export default class Main extends Component {
           <Link to={`/game/${img.id}`}>
             {img.clip === null ? (
               <img
-                className="gamePic1"
+                className="gamePic"
                 src={img.background_image}
                 alt="img not avalable"
               />

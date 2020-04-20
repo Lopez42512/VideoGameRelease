@@ -81,9 +81,9 @@ function GamePage() {
     if (window.innerWidth > 500) {
       event.target.stopVideo();
     }
-    console.log(event.target);
+    console.log(event.target.g.g.videoId);
     // this.setState({ gameClip: event.target.b.b.videoId, imageOrVid: true });
-    setbigVid(event.target.b.b.videoId);
+    setbigVid(event.target.g.g.videoId);
     setimageOrVid(true);
   }
   const videosOnScrollBarSliced =

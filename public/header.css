@@ -1,7 +1,7 @@
 .burgercontainer {
   position: absolute;
   /* top: 50%; */
-  width: 100px;
+  width: 150px;
   /* height: 50px; */
   font-size: 130%;
   color: white;
@@ -12,37 +12,37 @@
 }
 
 .burgercontainer:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .searchBar {
-    position: absolute;
-    background-color: black;
-    text-decoration: none;
-    opacity: .5;
-    width: 50%;
-    height: 30px;
-    padding-left: 20px;
-    border-radius: 20px;
-    left: 25%
+  position: absolute;
+  background-color: black;
+  text-decoration: none;
+  opacity: 0.5;
+  width: 50%;
+  height: 30px;
+  padding-left: 20px;
+  border-radius: 20px;
+  left: 25%;
 }
-.searchBar:hover{
-    background-color: white;
-    opacity: 1;
+.searchBar:hover {
+  background-color: white;
+  opacity: 1;
 }
 ::placeholder {
-    color: white;
-    
-    font-size: small;
+  color: white;
+
+  font-size: small;
 }
-::placeholder:hover{
-    color: black
+::placeholder:hover {
+  color: black;
 }
 .headerContainer {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    height: 50px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 50px;
 }
 .header {
   position: relative;
@@ -50,18 +50,18 @@
   width: 80%;
   height: 80px;
   padding: 30px 17% 0px 3%;
-  opacity: .9;
+  opacity: 0.9;
 }
 
 @media only screen and (max-width: 805px) {
-    .searchBar{
-        width: 200px;
-        left:40%
-    }
+  .searchBar {
+    width: 200px;
+    left: 40%;
+  }
 }
 @media only screen and (max-width: 424px) {
-    .searchBar{
-        width: 100px;
-        left:50%
-    }
+  .searchBar {
+    width: 100px;
+    left: 50%;
+  }
 }
