@@ -90,9 +90,9 @@ function GamePage() {
     videosOnScrollBar !== undefined
       ? videosOnScrollBar.slice(0, 6)
       : console.log("no videos");
-  
+  console.log(gameDesc.background_image)
   return (
-    <div className="youtubeContainer">
+    <div style={{backgroundImage: "url(" + gameDesc.background_image + ")"}} className="youtubeContainer">
       <h2 className="gameTitle">{gameDesc.name}</h2>
       <div className="game">
         {imageOrVid ? (
